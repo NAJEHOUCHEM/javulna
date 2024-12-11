@@ -26,7 +26,6 @@ pipeline { // Defines a pipeline
 
     stage ('docker build') { // Defines the 'docker build' stage
       steps { // Specifies the steps to be executed within this stage
-        sh 'chmod 777 /var/run/docker.sock'
         sh 'docker build -t javulna-0.1 .' // Builds a Docker image with the specified tag
       }   
     }
