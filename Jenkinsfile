@@ -26,6 +26,7 @@ pipeline { // Defines a pipeline
 
     stage ('docker build') { // Defines the 'docker build' stage
       steps { // Specifies the steps to be executed within this stage
+        docker rmi $(docker images -q)
         sh 'docker build -t javulna-0.1 .' // Builds a Docker image with the specified tag
       }   
     }
