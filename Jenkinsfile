@@ -33,7 +33,7 @@ pipeline { // Defines a pipeline
       steps {  //Specifies the steps to be executed within this stage
         sh ' docker stop app || true' //Stops any running container with the name 'app'
         sh ' docker rm  app || true'  //Removes the container with the name 'app' if it exists
-        def containerName = UUID.randomUUID().toString()
+        def containerName = UUID.randomUUID().toString();
         sh ' docker run --name $containerName -it -d -p 9002:8080 javulna-0.1' // Runs a new Docker container named 'app' based on the 'javulna-0.1' image, with port mapping from 8080 to 9000, in detached mode (-d), and allocates a pseudo-TTY (-it)
        }
    }
