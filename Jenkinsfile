@@ -11,7 +11,14 @@ pipeline { // Defines a pipeline
         git 'https://github.com/NAJEHOUCHEM/javulna.git' // Retrieves the source code from the specified GitHub repository
       }
     }
-    
+     stage('SonarQube Analysis') {
+      steps {
+        sh "mvn  verify sonar:sonar \
+             -Dsonar.projectKey=test1 \
+             -Dsonar.host.url=http://10.0.2.15:9002 \
+             -Dsonar.login=sqa_074702a6a24572ce29bba80d78a11c552eef2c1a"
+      }
+    }
     stage ('Unit Test') { // Defines the 'Unit Test' stage
       steps { // Specifies the steps to be executed within this stage
         sh 'mvn test' // Runs the Maven command to execute the unit tests
