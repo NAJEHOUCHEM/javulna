@@ -1,0 +1,41 @@
+from pyspark import SparkContext, SparkConf
+from pyspark.mllib.clustering import KMeans
+from numpy import array
+
+# Stop any existing SparkContext
+try:
+    sc.stop()
+except NameError:
+    pass
+
+# Initialize SparkConf and SparkContext with a custom SparkUI port
+conf = SparkConf().setAppName("KMeansExample").setMaster("local").set("spark.ui.port", "4050")
+sc = SparkContext(conf=conf)
+
+# Load the file
+data = sc.textFile("file:///home/u1/test.txt")
+
+# Collect the data
+print(data.collect())
+
+# Prepare the data transformation with enhanced error handling
+def parse_line(line):
+    try:
+        return array([float(x) for x in line.split()])
+    except ValueError:
+        return None
+
+# Filter out None values (invalid lines)
+p = data.map(parse_line).filter(lambda x: x is not None)
+
+# Collect the transformed data
+print(p.collect())
+
+# Train the k-means algorithm
+clusters = KMeans.train(p, 2, maxIterations=10, initializationMode="random")
+
+# Predict and collect the results
+print(clusters.predict(p).collect())
+
+# Stop the SparkContext
+sc.stop()
